@@ -13,20 +13,6 @@ module.exports = {
                 path: `${__dirname}/src/images`,
             },
         },
-        {
-            resolve: `gatsby-source-filesystem`,
-            options: {
-                name: `videos`,
-                path: `${__dirname}/src/videos`,
-            },
-        },
-        {
-            resolve: `gatsby-source-filesystem`,
-            options: {
-                name: `dribbble`,
-                path: `${__dirname}/src/dribbble`,
-            },
-        },
         `gatsby-transformer-sharp`,
         `gatsby-plugin-sharp`,
         {
@@ -41,23 +27,6 @@ module.exports = {
                 icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
             },
         },
-        `gatsby-plugin-transition-link`,
-        {
-            resolve: `gatsby-source-filesystem`,
-            options: {
-                name: `markdown-pages`,
-                path: `${__dirname}/src/content`,
-            },
-        },
-        `gatsby-plugin-mdx`,
-        `gatsby-plugin-styled-components`,
-        `gatsby-transformer-yaml`,
-        {
-            resolve: `gatsby-source-filesystem`,
-            options: {
-                name: `dribbble`,
-                path: `${__dirname}/src/dribbble`,
-            },
-        },
+        `gatsby-plugin-styled-components`
     ],
 }
