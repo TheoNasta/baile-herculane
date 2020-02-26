@@ -1,8 +1,8 @@
 module.exports = {
     siteMetadata: {
-        title: `Theodora Nasta`,
-        description: `Independent Designer working with User Experience Design, User Interface Design and Brand Identity`,
-        author: `Theodora Nasta`,
+        title: `Baile Herculane - Turism`,
+        description: `Baile Herculane - statiune balneara`,
+        author: `Baile Herculane`,
     },
     plugins: [
         `gatsby-plugin-react-helmet`,

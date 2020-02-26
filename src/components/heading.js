@@ -40,6 +40,17 @@ const StyledHeading = styled.h1`
                 font-size:45px;
             }
         `}
+    ${p =>
+        p.level === "3" &&
+        css`
+            font-weight: 100;
+            font-size: 40px;
+            line-height: 108.1%;
+
+            @media ${Device.tablet} {
+                font-size:30px;
+            }
+        `}
     
     color: ${p => {
         if (p.color == 'dark')

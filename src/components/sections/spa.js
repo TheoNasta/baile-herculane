@@ -3,27 +3,34 @@ import styled from 'styled-components'
 import { Heading } from '../heading'
 import { Paragraph } from '../paragraph'
 import { graphql, StaticQuery } from "gatsby"
+import ReactPlayer from "react-player"
 import Img from "gatsby-image"
 import { Sizes, useWindowSize, Device } from "../../global/sizes"
 import { Controller, Scene } from 'react-scrollmagic'
 import { TimelineMax, TweenMax } from 'gsap'
 import { useOnEnterLeaveTransition } from '../../../hooks/useOnEnterLeaveTransition'
+import { useBackgroundColorChange } from '../../../hooks/useBackgroundColorChange'
 
 
 export const Spa = () => {
     const handleAnimation = useOnEnterLeaveTransition(() => {
         var tl = new TimelineMax({ delay: 0 });
-        tl.add(TweenMax.to(".FadeIn", 0.3, { opacity: 1, y: 0 }));
-        tl.add(TweenMax.to(".FadeInNext", 0.3, { opacity: 1, y: 0, delay: 0.1 }));
-        tl.add(TweenMax.to(".FadeInNext2", 0.3, { opacity: 1, y: 0, delay: 0.2 }));
+        tl.add(TweenMax.to(".SpaFadeIn", 0.3, { opacity: 1, y: 0 }, 0.1));
+        tl.add(TweenMax.to(".SpaFadeInNext", 0.3, { opacity: 1, y: 0 }, 0.8));
+        tl.add(TweenMax.to(".SpaFadeInNext2", 0.3, { opacity: 1, y: 0 }, 0.8));
+        tl.add(TweenMax.to(".SpaFadeInImg", 0.2, { webkitClipPath: 'inset(0% 0% 0% 0% )' }, 0.1));
+        tl.add(TweenMax.to(".SpaFadeInImg2", 0.2, { webkitClipPath: 'inset(0% 0% 0% 0% )' }, 0.1));
         tl.play()
     }, () => {
         var tl = new TimelineMax({ delay: 0 });
-        tl.add(TweenMax.to(".FadeIn", 0.3, { opacity: 0, y: 20 }));
-        tl.add(TweenMax.to(".FadeInNext", 0.3, { opacity: 0, y: 20 }));
-        tl.add(TweenMax.to(".FadeInNext2", 0.3, { opacity: 0, y: 20 }));
+        tl.add(TweenMax.to(".SpaFadeIn", 0.3, { opacity: 0, y: 20 }));
+        tl.add(TweenMax.to(".SpaFadeInNext", 0.3, { opacity: 0, y: 20 }));
+        tl.add(TweenMax.to(".SpaFadeInNext2", 0.3, { opacity: 0, y: 20 }));
+        tl.add(TweenMax.to(".SpaFadeInImg", 0.1, { webkitClipPath: 'inset(0% 100% 0% 0% )' }));
+        tl.add(TweenMax.to(".SpaFadeInImg2", 0.1, { webkitClipPath: 'inset(0% 0% 0% 100% )' }));
         tl.play()
     })
+    const handleBackgroundColorChange = useBackgroundColorChange('#FFF', '#7FB0B5')
 
     return <StaticQuery
         query={graphql`
@@ -47,15 +54,16 @@ export const Spa = () => {
         render={data => <Controller vertical key="spa-controller">
             <Scene duration={500} triggerHook="onEnter" offset={500}>
                 {(progress, event) => {
+                    handleBackgroundColorChange(event)
                     handleAnimation(event)
                     return <SpaHome>
                         <ContentHolder>
-                            <Heading className="FadeIn" level="2" color="light">Apele sacre <br />ale lui Hercules</Heading>
-                            <Paragraph className="FadeInNext" color="light" col="2" style={{ marginTop: 60, marginBottom: 60, maxWidth: 790 }}>
+                            <Heading className="SpaFadeIn" level="2" color="light">Apele sacre <br />ale lui Hercules</Heading>
+                            <Paragraph className="SpaFadeInNext" color="light" col="2" style={{ marginTop: 60, marginBottom: 60, maxWidth: 790 }}>
                                 Herculane Thermal Water is rich in minerals and trace elements essential to calming and anti-free radicals action.
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. A, egestas tincidunt malesuada nisl faucibus , facilisi nunc leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </Paragraph>
-                            <SpaDecoTxt className="FadeInNext2">
+                            </Paragraph>
+                            <SpaDecoTxt className="SpaFadeInNext2">
                                 <svg width="637" height="208" viewBox="0 0 637 208" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g opacity="0.2">
                                         <path d="M23.6816 27.0391H7.54395L3.88184 37H0.732422L14.1846 1.45312H17.041L30.4932 37H27.3682L23.6816 27.0391ZM8.47168 24.4756H22.7295L15.6006 5.11523L8.47168 24.4756Z" fill="white" fill-opacity="0.8" />
@@ -84,13 +92,13 @@ export const Spa = () => {
                             <SpaVideos>
                                 <SpaVideoLeft>
                                     <a href="https://www.youtube.com/watch?v=pGTZQJ97adg" target="_blank">
-                                        <SpaVideo1
+                                        <SpaVideo1 className="SpaFadeInImg"
                                             fluid={data.first.childImageSharp.fluid}
-                                            alt="Gatsby Docs are awesome"
+                                            alt="Ivatherm Baile Herculane"
                                         />
                                         <svg width="105" height="105" viewBox="0 0 105 105" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g filter="url(#filter0_b)">
-                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M52.5 105C81.495 105 105 81.4949 105 52.5C105 23.5051 81.495 0 52.5 0C23.505 0 0 23.5051 0 52.5C0 81.4949 23.505 105 52.5 105ZM44 32V71.5L67 51L44 32Z" fill="white" fill-opacity="0.5" />
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M52.5 105C81.495 105 105 81.4949 105 52.5C105 23.5051 81.495 0 52.5 0C23.505 0 0 23.5051 0 52.5C0 81.4949 23.505 105 52.5 105ZM44 32V71.5L67 51L44 32Z" fill="white" fill-opacity="1" />
                                             </g>
                                             <defs>
                                                 <filter id="filter0_b" x="-4" y="-4" width="113" height="113" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -104,29 +112,34 @@ export const Spa = () => {
                                     </a>
                                 </SpaVideoLeft>
                                 <SpaVideosRight>
-                                    <SpaVideo2
+                                    <SpaVideo2 className="SpaFadeInImg2"
                                         fluid={data.second.childImageSharp.fluid}
-                                        alt="Gatsby Docs are awesome"
+                                        alt="Baile Heruculane - apa"
                                     />
-                                    <Paragraph color="light"><em>Rucsandra Hurezeanu</em> - despre beneficiile apei de la Herculane</Paragraph>
+                                    <Paragraph color="light" style={{ fontSize: 14 }}><em>Rucsandra Hurezeanu</em> - despre beneficiile apei de la Herculane</Paragraph>
                                 </SpaVideosRight>
                             </SpaVideos>
 
                         </ContentHolder>
                     </SpaHome>
                 }}</Scene>
-        </Controller>
+        </Controller >
         } />
 }
 
 const SpaHome = styled.div`
     min-height: 100vh;
     width: 100vw;
-    background-color: #7FB0B5;
 
-    .FadeIn, .FadeInNext, .FadeInNext2{
+    .SpaFadeIn, .SpaFadeInNext, .SpaFadeInNext2{
         opacity:0;
         transform: translateY(20px);
+    }
+    .SpaFadeInImg{
+        clip-path: inset(0% 100% 0% 0% )
+    }
+    .SpaFadeInImg2{
+        clip-path: inset(0% 0% 0% 100% )
     }
 `
 
@@ -179,7 +192,6 @@ const SpaVideoLeft = styled.div`
     @media ${Device.tablet} {
         width:100%;
     }
-
     svg{
         position:absolute;
         left:0;
@@ -187,14 +199,25 @@ const SpaVideoLeft = styled.div`
         top:0;
         bottom:0;
         margin:auto;
+        opacity:0.5;
+        transition:all 0.3s ease-in;
+
     }
+    
+    &:hover{
+        svg{
+            opacity:1;
+    }
+}
 `
 const SpaVideo1 = styled(Img)`
     width:100%;
+    transition: all 0.3s ease-in;
 `
 const SpaVideo2 = styled(Img)`
     z-index: 1;
     width: 100%;
+    transition: all 0.3s ease-in;
     @media ${Device.tablet} {
         margin-top:60px;
     }

@@ -30,7 +30,8 @@ export const Hero = (container) => {
         render={data => <Controller vertical key="hero-controller">
             <Scene duration={1000} triggerHook="onLeave">
                 {(progress, event) => {
-                    scaleHeader(progress)
+                    if (progress > 0)
+                        scaleHeader(progress)
                     return (<HeroHolder>
                         <ContentHolder>
                             <Heading color="light" level="1">Baile <br /> Herculane</Heading>
@@ -61,6 +62,7 @@ const HeroHolder = styled.div`
     flex-direction: column;
     justify-content: flex-end;
     position: relative;
+    overflow:hidden;
 `
 
 const ContentHolder = styled.div`

@@ -8,6 +8,7 @@ import { Spa } from "../components/sections/spa"
 import { Nature } from "../components/sections/nature"
 import { ImageSlider } from "../components/sections/image-slider"
 import { Activities } from "../components/sections/activities"
+import { Around } from "../components/sections/around"
 import { Footer } from "../components/sections/footer"
 
 const IndexPage = () => {
@@ -17,11 +18,11 @@ const IndexPage = () => {
         <Page ref={pageRef}>
             <Logo />
             <Hero container={pageRef} />
-            <ShortHistory />
+            <Activities />
             <Spa />
             <Nature />
-            <ImageSlider />
-            <Activities />
+            <ShortHistory />
+            <Around />
             <Footer />
         </Page>
     )

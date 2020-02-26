@@ -1,8 +1,8 @@
 import React from "react"
 import styled, { css } from "styled-components"
 
-export const Link = ({ to, children, effect = "underline" }) => {
-    return <StyledElement href={to} effect={effect} target="_blank">{children}</StyledElement>
+export const Link = ({ to, children, effect = "none", color = "white" }) => {
+    return <StyledElement href={to} effect={effect} color={color} target="_blank">{children}</StyledElement>
 }
 
 const StyledElement = styled.a`
@@ -24,6 +24,12 @@ const StyledElement = styled.a`
             opacity:0.8;
             padding-bottom:5px;
             border-bottom:1px solid white;
+        }
+    `}
+    ${a => a.color == "black" && css`
+        color:#000;
+        &:hover{
+            border-bottom:1px solid #000;
         }
     `}
 `

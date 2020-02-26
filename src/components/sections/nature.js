@@ -5,8 +5,30 @@ import { Paragraph } from '../paragraph'
 import { graphql, StaticQuery } from "gatsby"
 import Img from "gatsby-image"
 import { Sizes, useWindowSize, Device } from "../../global/sizes"
+import { Controller, Scene } from 'react-scrollmagic'
+import { TimelineMax, TweenMax, Linear, Sine, Cubic, Expo, Power2, Power3 } from 'gsap'
+import { useOnEnterLeaveTransition } from '../../../hooks/useOnEnterLeaveTransition'
+import { useBackgroundColorChange } from '../../../hooks/useBackgroundColorChange'
+import { PowerCover } from '../power-cover'
+import { usePowerCover } from '../../../hooks/usePowerCover'
+
 
 export const Nature = () => {
+    const handleAnimation = useOnEnterLeaveTransition(() => {
+        var tl = new TimelineMax({ delay: 0 });
+        tl.add(TweenMax.to(".NatFadeIn", 0.3, { opacity: 1, y: 0 }));
+        tl.add(TweenMax.to(".NatFadeInNext", 0.3, { opacity: 1, y: 0 }));
+        tl.add(TweenMax.to(".NatFadeInNext2", 0.3, { opacity: 1, y: 0 }));
+        tl.play()
+    }, () => {
+        TweenMax.to(".NatFadeIn", 0.3, { opacity: 0, y: 20 })
+        TweenMax.to(".NatFadeInNext", 0.3, { opacity: 0, y: 20 })
+        TweenMax.to(".NatFadeInNext2", 0.3, { opacity: 0, y: 20 })
+    })
+    const handleBackgroundColorChange = useBackgroundColorChange('#7FB0B5', '#FFF')
+    const ImgEnterLeave = usePowerCover("NatFadeInImg", "right")
+    const Img2EnterLeave = usePowerCover("NatFadeInImg2", "right")
+
     return <StaticQuery
         query={graphql`
             query {
@@ -24,7 +46,14 @@ export const Nature = () => {
                         }
                     }
                 }
-                third: file(relativePath: { eq: "mountains-bg.jpg" }) {
+                third: file(relativePath: { eq: "mountains-bg.png" }) {
+                    childImageSharp {
+                        fluid {
+                            ...GatsbyImageSharpFluid
+                        }
+                    }
+                }
+                forth: file(relativePath: { eq: "fullimg1.jpg" }) {
                     childImageSharp {
                         fluid {
                             ...GatsbyImageSharpFluid
@@ -33,45 +62,66 @@ export const Nature = () => {
                 }
             }
         `}
-        render={data => <NatureHome>
-            <ContentHolder>
-                <ContentLeft>
-                    <Heading level="2">Păsește pe urmele Impărătesei Sissi și al Impăratului Franz Joseph</Heading>
-                    <NaturePhoto1
-                        fluid={data.first.childImageSharp.fluid}
-                        alt="Gatsby Docs are awesome"
-                    />
-                </ContentLeft>
-                <ContentRight>
-                    <Paragraph style={{}}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum est viverra urna nunc. Etiam eu, tristique enim quis egestas.
+        render={data => <Controller vertical key="short-history-controller">
+            <Scene duration={500} triggerHook="onEnter" offset={500}>
+                {(progress, event) => {
+                    handleAnimation(event)
+                    ImgEnterLeave(event)
+                    Img2EnterLeave(event)
+                    handleBackgroundColorChange(event)
+                    return <NatureHome>
+                        <ContentHolder>
+                            <ContentLeft>
+                                <Heading level="2" className="NatFadeIn">Păsește pe urmele Impărătesei Sissi și al Impăratului Franz Joseph</Heading>
+                                <PowerCover className="NatFadeInImg">
+                                    <NaturePhoto1
+                                        fluid={data.first.childImageSharp.fluid}
+                                        alt="Pinul Negru Herculane"
+                                    />
+                                </PowerCover>
+                            </ContentLeft>
+                            <ContentRight>
+                                <Paragraph style={{}} className="NatFadeInNext">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum est viverra urna nunc. Etiam eu, tristique enim quis egestas.
                         <br /><br /><br />
-                        <b>Aer ionizat</b>
-                        <br /><br />
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum est viverra urna nunc. Etiam eu, tristique enim quis egestas.
+                                    <b>Aer ionizat</b>
+                                    <br /><br />
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum est viverra urna nunc. Etiam eu, tristique enim quis egestas.
                         <br /><br /><br />
-                        <b>Pinul negru de banat</b>
-                        <br /><br />
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum est viverra urna nunc. Etiam eu, tristique enim quis egestas.
+                                    <b>Pinul negru de banat</b>
+                                    <br /><br />
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum est viverra urna nunc. Etiam eu, tristique enim quis egestas.
                     </Paragraph>
-                    <NaturePhoto2
-                        fluid={data.second.childImageSharp.fluid}
-                        alt="Gatsby Docs are awesome"
-                    />
-                </ContentRight>
-                <BackPhoto
-                    fluid={data.third.childImageSharp.fluid}
-                    alt="Gatsby Docs are awesome"
-                />
-            </ContentHolder>
-        </NatureHome>
+                                <PowerCover className="NatFadeInImg2">
+                                    <NaturePhoto2
+                                        fluid={data.second.childImageSharp.fluid}
+                                        alt="Statuia lui Hercules"
+                                    />
+                                </PowerCover>
+                            </ContentRight>
+                            <NaturePhoto3
+                                fluid={data.forth.childImageSharp.fluid}
+                                alt="Muntii Domogled"
+                            />
+                            <BackPhoto
+                                fluid={data.third.childImageSharp.fluid}
+                                alt="Mountains"
+                            />
+                        </ContentHolder>
+                    </NatureHome>
+                }}</Scene>
+        </Controller>
         } />
 }
+
 
 const NatureHome = styled.div`
     min-height: 100vh;
     width: 100vw;
-    background-color: white;
+    .NatFadeIn, .NatFadeInNext, .NatFadeInNext2{
+        opacity:0;
+        transform: translateY(20px);
+    }
 `
 
 const ContentHolder = styled.div`
@@ -80,6 +130,7 @@ const ContentHolder = styled.div`
     display:flex;
     justify-content:space-between;
     flex-direction:row;
+    flex-wrap:wrap;
     max-width:1114px;
     margin-left:auto;
     margin-right:auto;
@@ -98,11 +149,25 @@ const NaturePhoto1 = styled(Img)`
     width: 100%;
     margin-top:60px;
 `
-const NaturePhoto2 = styled(Img)`
-    z-index: 1;
+
+const NaturePhoto2Holder = styled.div`
     width: 100%;
     align-self:flex-end;
+    overflow: hidden;
+    transform-origin: left center;
 `
+
+const NaturePhoto2 = styled(Img)`
+    width: 100%;
+    transform-origin: left center;
+`
+
+const NaturePhoto3 = styled(Img)`
+    z-index: 1;
+    width: 100%;
+    margin-top:60px;
+`
+
 const ContentLeft = styled.div`
     z-index: 1;
     width: 47%;
@@ -127,8 +192,8 @@ const BackPhoto = styled(Img)`
     position:absolute !important;
     max-width:900px;
     width:70%;
-    left:30px;
-    bottom:30%;
+    right:30px;
+    bottom:50%;
     height:auto;
 
     @media ${Device.tablet} {

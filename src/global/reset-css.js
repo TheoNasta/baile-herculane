@@ -18,6 +18,7 @@ export const GlobalStyle = createGlobalStyle`
         margin: 0;
         padding: 0;
         font-size: 16px;
+        transition: 1s ease background-color;
     }
     
     *::-webkit-scrollbar { width: 0 !important }
