@@ -12,8 +12,8 @@ import { GlobalStyle } from '../global/reset-css';
 export const Layout = ({ children }) => {
   return (
     <>
-      <GlobalStyle/>
-      { children }
+      <GlobalStyle />
+      {children}
     </>
   )
 }
