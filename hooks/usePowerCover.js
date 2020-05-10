@@ -1,9 +1,9 @@
 import React, { useCallback, useRef, useEffect } from "react"
 import { TweenMax, Power3 } from "gsap"
 import { useOnEnterLeaveTransition } from "./useOnEnterLeaveTransition"
+import { useIsMobile } from "./useIsMobile"
 
 export const usePowerCover = (className, direction) => {
-
     const trans = {
         enter: {},
         leave: {}
@@ -38,7 +38,6 @@ export const usePowerCover = (className, direction) => {
 
     useEffect(() => {
         setTimeout(() => {
-
             TweenMax.set(`.${className}Holder`, {
                 ...trans.leave
             })
@@ -60,7 +59,7 @@ export const usePowerCover = (className, direction) => {
             TweenMax.to(`.${className}Holder`, 1.2, {
                 delay: 0,
                 onUpdate: inverseScale,
-                onUpdateParams: ["{self}", e],
+                onUpdateParams: ["{self}", e, direction],
                 roundProps: "x, y",
                 ease: Power3.easeOut,
                 ...trans.enter
@@ -72,7 +71,7 @@ export const usePowerCover = (className, direction) => {
             TweenMax.to(`.${className}Holder`, 1.2, {
                 delay: 0.2,
                 onUpdate: inverseScale,
-                onUpdateParams: ["{self}", e],
+                onUpdateParams: ["{self}", e, direction],
                 roundProps: "x, y",
                 ease: Power3.easeIn,
                 ...trans.leave
@@ -84,12 +83,12 @@ export const usePowerCover = (className, direction) => {
 }
 
 
-const inverseScale = (tween, e) => {
-    if (tween.target[0]._gsTransform.scaleX) {
+const inverseScale = (tween, e, direction) => {
+    if (direction == "left" || "right") {
         const scale = tween.target[0]._gsTransform.scaleX
         e.style.transform = "scaleX(" + (1 / scale) + ")"
     }
-    if (tween.target[0]._gsTransform.scaleY) {
+    if (direction == "up" || direction == "down") {
         const scale = tween.target[0]._gsTransform.scaleY
         e.style.transform = "scaleY(" + (1 / scale) + ")"
     }

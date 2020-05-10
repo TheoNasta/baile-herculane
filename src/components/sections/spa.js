@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Heading } from '../heading'
 import { Paragraph } from '../paragraph'
@@ -7,30 +7,37 @@ import ReactPlayer from "react-player"
 import Img from "gatsby-image"
 import { Sizes, useWindowSize, Device } from "../../global/sizes"
 import { Controller, Scene } from 'react-scrollmagic'
-import { TimelineMax, TweenMax } from 'gsap'
+import { TimelineMax, TweenMax, Linear, Sine, Cubic, Expo, Power2, Power3 } from 'gsap'
 import { useOnEnterLeaveTransition } from '../../../hooks/useOnEnterLeaveTransition'
 import { useBackgroundColorChange } from '../../../hooks/useBackgroundColorChange'
-
+import { PowerCover } from '../power-cover'
+import { usePowerCover } from '../../../hooks/usePowerCover'
+import YouTube from 'react-youtube';
 
 export const Spa = () => {
+    const videoRef = useRef()
     const handleAnimation = useOnEnterLeaveTransition(() => {
         var tl = new TimelineMax({ delay: 0 });
         tl.add(TweenMax.to(".SpaFadeIn", 0.3, { opacity: 1, y: 0 }, 0.1));
         tl.add(TweenMax.to(".SpaFadeInNext", 0.3, { opacity: 1, y: 0 }, 0.8));
         tl.add(TweenMax.to(".SpaFadeInNext2", 0.3, { opacity: 1, y: 0 }, 0.8));
-        tl.add(TweenMax.to(".SpaFadeInImg", 0.2, { webkitClipPath: 'inset(0% 0% 0% 0% )' }, 0.1));
-        tl.add(TweenMax.to(".SpaFadeInImg2", 0.2, { webkitClipPath: 'inset(0% 0% 0% 0% )' }, 0.1));
         tl.play()
     }, () => {
         var tl = new TimelineMax({ delay: 0 });
         tl.add(TweenMax.to(".SpaFadeIn", 0.3, { opacity: 0, y: 20 }));
         tl.add(TweenMax.to(".SpaFadeInNext", 0.3, { opacity: 0, y: 20 }));
         tl.add(TweenMax.to(".SpaFadeInNext2", 0.3, { opacity: 0, y: 20 }));
-        tl.add(TweenMax.to(".SpaFadeInImg", 0.1, { webkitClipPath: 'inset(0% 100% 0% 0% )' }));
-        tl.add(TweenMax.to(".SpaFadeInImg2", 0.1, { webkitClipPath: 'inset(0% 0% 0% 100% )' }));
         tl.play()
     })
     const handleBackgroundColorChange = useBackgroundColorChange('#FFF', '#7FB0B5')
+
+    const SpaImgEnterLeave = usePowerCover("SpaFadeInImg", "right")
+    const SpaImg2EnterLeave = usePowerCover("SpaFadeInImg2", "left")
+    const [showVideo, setShowVideo] = useState(false)
+
+    const onReady = (event) => {
+        videoRef.current = event.target;
+    }
 
     return <StaticQuery
         query={graphql`
@@ -54,14 +61,16 @@ export const Spa = () => {
         render={data => <Controller vertical key="spa-controller">
             <Scene duration={500} triggerHook="onEnter" offset={500}>
                 {(progress, event) => {
+                    SpaImgEnterLeave(event)
+                    SpaImg2EnterLeave(event)
                     handleBackgroundColorChange(event)
                     handleAnimation(event)
                     return <SpaHome>
                         <ContentHolder>
                             <Heading className="SpaFadeIn" level="2" color="light">Apele sacre <br />ale lui Hercules</Heading>
                             <Paragraph className="SpaFadeInNext" color="light" col="2" style={{ marginTop: 60, marginBottom: 60, maxWidth: 790 }}>
-                                Herculane Thermal Water is rich in minerals and trace elements essential to calming and anti-free radicals action.
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. A, egestas tincidunt malesuada nisl faucibus , facilisi nunc leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                "Legenda spune că Hercule, erou in mitologia greacă, a luptat cu Hydra chiar în Herculane. După ce s-a scălat în izvoarele termale miraculoase, Hercule a câștigat puteri noi și a învins Hydra.
+                                Fiecare apă termală este unică, noi credem ca o avem pe cea mai bună. E pură, ferită de orice poluare urbană sau industrială și conține elemente indispensabile pielii."
                             </Paragraph>
                             <SpaDecoTxt className="SpaFadeInNext2">
                                 <svg width="637" height="208" viewBox="0 0 637 208" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -91,31 +100,44 @@ export const Spa = () => {
                             </SpaDecoTxt>
                             <SpaVideos>
                                 <SpaVideoLeft>
-                                    <a href="https://www.youtube.com/watch?v=pGTZQJ97adg" target="_blank">
-                                        <SpaVideo1 className="SpaFadeInImg"
-                                            fluid={data.first.childImageSharp.fluid}
-                                            alt="Ivatherm Baile Herculane"
-                                        />
-                                        <svg width="105" height="105" viewBox="0 0 105 105" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <g filter="url(#filter0_b)">
-                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M52.5 105C81.495 105 105 81.4949 105 52.5C105 23.5051 81.495 0 52.5 0C23.505 0 0 23.5051 0 52.5C0 81.4949 23.505 105 52.5 105ZM44 32V71.5L67 51L44 32Z" fill="white" fill-opacity="1" />
-                                            </g>
-                                            <defs>
-                                                <filter id="filter0_b" x="-4" y="-4" width="113" height="113" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                                    <feGaussianBlur in="BackgroundImage" stdDeviation="2" />
-                                                    <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur" />
-                                                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur" result="shape" />
-                                                </filter>
-                                            </defs>
-                                        </svg>
-                                    </a>
+                                    <PowerCover className="SpaFadeInImg" style={{ height: "100%" }}>
+                                        <VideoHolder>
+                                            <YouTube
+                                                opts={{
+                                                    width: '100%',
+                                                    height: '100%'
+                                                }}
+                                                videoId="pGTZQJ97adg"
+                                                onReady={onReady}
+                                            />
+                                            {!showVideo && <VideoMask onClick={() => { setShowVideo(true); console.log(videoRef.current); videoRef.current.playVideo() }}>
+                                                <SpaVideo1 className=""
+                                                    fluid={data.first.childImageSharp.fluid}
+                                                    alt="Ivatherm Baile Herculane"
+                                                />
+                                                <svg width="105" height="105" viewBox="0 0 105 105" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <g filter="url(#filter0_b)">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M52.5 105C81.495 105 105 81.4949 105 52.5C105 23.5051 81.495 0 52.5 0C23.505 0 0 23.5051 0 52.5C0 81.4949 23.505 105 52.5 105ZM44 32V71.5L67 51L44 32Z" fill="white" fill-opacity="1" />
+                                                    </g>
+                                                    <defs>
+                                                        <filter id="filter0_b" x="-4" y="-4" width="113" height="113" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                                            <feGaussianBlur in="BackgroundImage" stdDeviation="2" />
+                                                            <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur" />
+                                                            <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur" result="shape" />
+                                                        </filter>
+                                                    </defs>
+                                                </svg></VideoMask>}
+                                        </VideoHolder>
+                                    </PowerCover>
                                 </SpaVideoLeft>
                                 <SpaVideosRight>
-                                    <SpaVideo2 className="SpaFadeInImg2"
-                                        fluid={data.second.childImageSharp.fluid}
-                                        alt="Baile Heruculane - apa"
-                                    />
+                                    <PowerCover className="SpaFadeInImg2">
+                                        <SpaVideo2 className=""
+                                            fluid={data.second.childImageSharp.fluid}
+                                            alt="Baile Heruculane - apa"
+                                        />
+                                    </PowerCover>
                                     <Paragraph color="light" style={{ fontSize: 14 }}><em>Rucsandra Hurezeanu</em> - despre beneficiile apei de la Herculane</Paragraph>
                                 </SpaVideosRight>
                             </SpaVideos>
@@ -135,12 +157,6 @@ const SpaHome = styled.div`
         opacity:0;
         transform: translateY(20px);
     }
-    .SpaFadeInImg{
-        clip-path: inset(0% 100% 0% 0% )
-    }
-    .SpaFadeInImg2{
-        clip-path: inset(0% 0% 0% 100% )
-    }
 `
 
 const ContentHolder = styled.div`
@@ -157,6 +173,44 @@ const ContentHolder = styled.div`
     padding:200px 10%;
     z-index: 1;
 `
+
+const VideoHolder = styled.div`
+    position: relative;
+    width: 100%;
+    height: 400px;
+    
+    > * {
+        height: 100%;
+    }
+
+    @media ${Device.tablet} {
+        height:auto;
+    }
+`
+
+const YoutubeHolder = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+`
+
+const SpaVideo1 = styled(Img)`
+    width:100%;
+`
+
+const VideoMask = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 1;
+`
+
 const SpaVideos = styled.div`
     z-index: 1;
     display: flex;
@@ -210,10 +264,6 @@ const SpaVideoLeft = styled.div`
     }
 }
 `
-const SpaVideo1 = styled(Img)`
-    width:100%;
-    transition: all 0.3s ease-in;
-`
 const SpaVideo2 = styled(Img)`
     z-index: 1;
     width: 100%;
@@ -232,5 +282,6 @@ const SpaDecoTxt = styled.div`
         max-width:300px;
         width:50%;
         top:100px;
+        display:none;
     }
 `

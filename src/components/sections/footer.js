@@ -10,6 +10,7 @@ import { TweenMax, Power0 } from "gsap"
 import { Sizes, useWindowSize, Device } from "../../global/sizes"
 import { useBackgroundColorChange } from '../../../hooks/useBackgroundColorChange'
 import { Controller, Scene } from 'react-scrollmagic'
+import { useIsMobile } from '../../../hooks/useIsMobile'
 
 export const Footer = () => {
     const hotels = {
@@ -42,6 +43,7 @@ export const Footer = () => {
         acc[hotelId] = React.createRef()
         return acc
     }, {}))
+    const isMobile = useIsMobile()
 
 
     useEffect(() => {
@@ -61,6 +63,16 @@ export const Footer = () => {
 
     useEffect(() => {
         setLoaded(true)
+        setTimeout(() => {
+
+            if (imageRefs.current[selectedHotel]) {
+                TweenMax.to(imageRefs.current[selectedHotel].current, 0.3, {
+                    opacity: 1,
+                    x: 0,
+                })
+                previousHoveredImage.current = imageRefs.current[selectedHotel].current
+            }
+        }, 500)
     }, [])
 
     const handleBackgroundChange = useBackgroundColorChange('#FFF', '#424242')
@@ -95,7 +107,7 @@ export const Footer = () => {
                         handleBackgroundChange(event)
                         return <FooterWrap>
                             <ContentHolder>
-                                <Heading level="2" color="light">You’re always welcome!</Heading>
+                                <Heading level="2" color="light">Sunteți întotdeauna bineveniți!</Heading>
                                 <Hotels>
                                     <HotelsLeft>
                                         {
@@ -134,10 +146,10 @@ export const Footer = () => {
                                 </Hotels>
                                 <FooterLinks>
                                     <Link effect="underline" to="https://bit.ly/2Vh4XsH">Vezi mai multe ></Link>
-                                    <Link effect="underline" to="https://goo.gl/maps/CEdS2vYg4w13Djdp6"><svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <Link effect="underline" to="https://baile-herculane-city.map2web.eu"><svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M7.74389 12.8047C10.3012 10.3573 12 8.73157 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 8.75234 2.06965 10.7269 4.48992 13.036C4.98356 13.5069 5.49178 13.9918 6 14.5C6.61487 13.8851 7.19887 13.3262 7.74389 12.8047ZM6 9C7.65685 9 9 7.65685 9 6C9 4.34315 7.65685 3 6 3C4.34315 3 3 4.34315 3 6C3 7.65685 4.34315 9 6 9Z" fill="white" />
                                     </svg>
-                                        Find out how to get here >
+                                        Vezi cum să ajungi aici >
                         </Link>
                                     <Copyright color="light" style={{}}>Copyright 2020 Baile Herculane. All rights reserved</Copyright>
                                 </FooterLinks>
@@ -203,10 +215,11 @@ const HotelName = styled.div`
         background-color: #5E5E5E;
     }
 
-    @media ${Device.tablet} {
+    a{@media ${Device.tablet} {
         flex-direction:column;
         align-items:flex-start;
         width:100%;
+    }
     }
 `
 const HotelsRight = styled.div`

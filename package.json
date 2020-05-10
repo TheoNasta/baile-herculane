@@ -33,6 +33,7 @@
     "react-player": "^1.13.0",
     "react-scrollmagic": "^2.1.1",
     "react-use-dimensions": "^1.2.1",
+    "react-youtube": "^7.9.0",
     "rehype-react": "^4.0.1",
     "styled-components": "^4.4.0"
   },

@@ -5,6 +5,7 @@ import { Paragraph } from '../paragraph'
 import { graphql, StaticQuery, useStaticQuery } from "gatsby"
 import Img from "gatsby-image"
 import GatsbyImage from 'gatsby-image'
+import { Sizes, useWindowSize, Device } from "../../global/sizes"
 import { Controller, Scene } from 'react-scrollmagic'
 import { TimelineMax, TweenMax } from 'gsap'
 import { Link } from '../link'
@@ -62,13 +63,13 @@ export const Activities = () => {
     const activities = {
         'activity1': {
             class: "activityOne",
-            name: "Slow down and reconnect with yorself",
+            name: "Relaxare si wellness",
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
             handle: usePowerCover("activityOne", "up")
         },
         'activity2': {
             class: "activityTwo",
-            name: "Slow down and reconnect with yorself",
+            name: "Reconectează-te cu natura",
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
             handle: usePowerCover("activityTwo", "up")
         },
@@ -103,19 +104,19 @@ export const Activities = () => {
     const [showMore, setShowMore] = useState(false)
 
     return <Controller vertical key="activities-controller">
-        <Scene duration={1300} triggerHook="onLeave" offset={100}>
+        <Scene duration={1300} triggerHook="onLeave" offset={-200}>
             {(progress, event) => {
                 return <ActivitiesHome>
                     <ContentHolder>
                         <ContentTop>
                             <Div>
-                                <Heading level="2" >Lorem ipsum color dolor</Heading>
-                                <Paragraph style={{ marginTop: 40, maxWidth: 350 }}>La doar 2 ore de Timisoara si Craviova, Baile Herculane este locul perfect pentru a va relaxa si reconecta cu natura</Paragraph>
+                                <Heading level="2" >La doar câteva ore de Timișoara și Craiova, Băile Herculane este locul perfect pentru a vă relaxa și reconecta cu natura</Heading>
+                                {/* <Paragraph style={{ marginTop: 40, maxWidth: 350 }}>La o altitudine de 168m și doar 2 ore de Timișoara si Craiova, Băile Herculane este locul perfect pentru a vă relaxa și reconecta cu natura</Paragraph> */}
                             </Div>
-                            <MapImg
+                            {/* <MapImg
                                 fluid={mapimg.childImageSharp.fluid}
                                 alt="Harta Baile Herculane"
-                            />
+                            /> */}
                         </ContentTop>
                         <ActivitiesList>
                             {
@@ -126,20 +127,20 @@ export const Activities = () => {
 
                                     if (i > 1 && !showMore)
                                         return null
-                                    return <PowerCover className={a.class}> <ActivityPrev>
-                                        <GatsbyImage className="ContainedImage" fluid={a.image} style={{ height: '100%', width: 500 }} />
+                                    return <PowerHolder> <PowerCover className={a.class} style={{}}> <ActivityPrev>
+                                        <GatsbyImage className="ContainedImage" fluid={a.image} style={{ height: '100%' }} />
                                         <ActivityText>
                                             <Heading className="ActivityName" level="3" color={'light'}>{a.name}</Heading>
-                                            <Paragraph className="ActivityDesc" color={'light'}>{a.description}</Paragraph>
+                                            {/* <Paragraph className="ActivityDesc" color={'light'}>{a.description}</Paragraph> */}
                                         </ActivityText>
-                                    </ActivityPrev></PowerCover>
+                                    </ActivityPrev></PowerCover></PowerHolder>
                                 })
                             }
                         </ActivitiesList>
-                        <span color="black" effect="underline" className="SeeMore" onClick={() => {
+                        <span className="SeeMore" onClick={() => {
                             setShowMore(e => !e)
                         }}>
-                            {showMore ? "See less" : "See more"}
+                            {showMore ? "Vezi mai puțin" : "Vezi mai multe activități"}
                         </span>
 
                         <BackPhoto
@@ -170,6 +171,24 @@ const ContentHolder = styled.div`
             width:80%;
             padding:200px 10%;
             z-index: 1;
+
+            span{
+            margin-left:auto;
+            margin-right:auto;
+            margin-top:60px !important;
+            font-family: "Inter", sans-serif;
+            font-style: bold;
+            font-size:18px;
+            align-items:center;
+            transition:all 0.2s ease-in;
+            cursor:pointer;
+
+            &:hover{
+                opacity:0.8;
+                padding-bottom:5px;
+                border-bottom:1px solid #000;
+            }
+        }
         `
 
 const ContentTop = styled.div`
@@ -188,11 +207,11 @@ const ActivitiesList = styled.div`
         flex-wrap: wrap;
         flex-direction: row;
 
-        a{
-            margin-left:auto;
-            margin-right:auto;
-            margin-top:120px !important;
+        @media ${Device.tablet} {
+                flex-direction: column;
+                height:auto;
         }
+
 `
 
 const ActivityText = styled.div`
@@ -205,11 +224,32 @@ const ActivityText = styled.div`
 `
 
 const Div = styled.div`
+    width:46%;
 
+    h1{
+        line-height:124%;
+    }
+    @media ${Device.tablet} {
+                width:100%;
+        }
 `
+const PowerHolder = styled.div`
+    width:46%;
 
+    &:nth-child(2n){
+        margin-top:60px;
+    }
+    @media ${Device.tablet} {
+                width:100%;
+                height:300px;
+                margin-bottom:30px;
+
+                &:nth-child(2n){
+                    margin-top:0px;
+                }
+        }
+`
 const ActivityPrev = styled.div`
-            width:47%;
             height:759px;
             position: relative;
             margin-bottom:40px;
@@ -217,6 +257,7 @@ const ActivityPrev = styled.div`
 
             .ContainedImage{
                 transition:all 1s ease-in;
+                width: 100%;
             }
 
             &:nth-child(2n){
@@ -236,6 +277,12 @@ const ActivityPrev = styled.div`
                     transform:scale(1.2);
                 }
             }
+            @media ${Device.tablet} {
+                width:100%;
+                height:300px;
+
+        }
+
         `
 const BackPhoto = styled(Img)`
             z-index: -1;

@@ -5,10 +5,13 @@ import { Paragraph } from '../paragraph'
 import { graphql, StaticQuery, useStaticQuery } from "gatsby"
 import Img from "gatsby-image"
 import GatsbyImage from 'gatsby-image'
+import { Sizes, useWindowSize, Device } from "../../global/sizes"
 import { Controller, Scene } from 'react-scrollmagic'
 import { TimelineMax, TweenMax } from 'gsap'
 import { useOnEnterLeaveTransition } from '../../../hooks/useOnEnterLeaveTransition'
 import { useBackgroundColorChange } from '../../../hooks/useBackgroundColorChange'
+import { usePowerCover } from '../../../hooks/usePowerCover'
+import { PowerCover } from '../power-cover'
 
 export const Around = () => {
     const { images, background } = useStaticQuery(
@@ -19,7 +22,7 @@ export const Around = () => {
                     node {
                         name
                         childImageSharp {
-                            fluid {
+                            fluid(maxWidth:800) {
                                 ...GatsbyImageSharpFluid
                             }
                         }
@@ -51,13 +54,19 @@ export const Around = () => {
 
     const activities = {
         'around1': {
-            name: "Parcul National Domogled - Valea Cernei"
+            class: "AroundOne",
+            name: "Parcul Național Domogled - Valea Cernei",
+            handle: usePowerCover("AroundOne", "up")
         },
         'around2': {
-            name: "Cazanele Dunarii"
+            class: "AroundTwo",
+            name: "Cazanele Dunarii",
+            handle: usePowerCover("AroundTwo", "up")
         },
         'around3': {
-            name: "Capul lui Decebal"
+            class: "AroundThree",
+            name: "Capul lui Decebal",
+            handle: usePowerCover("AroundThree", "up")
         },
     }
 
@@ -70,22 +79,26 @@ export const Around = () => {
     const handleBackgroundColorChange = useBackgroundColorChange('#F1F0F0', '#FFF')
 
     return <Controller vertical key="activities-controller">
-        <Scene triggerHook="onLeave" offset={100}>
+        <Scene triggerHook="onLeave" offset={-200}>
             {(progress, event) => {
                 handleBackgroundColorChange(event)
                 return <ActivitiesHome>
                     <ContentHolder>
 
-                        <Heading level="2" className="FadeIn">Around</Heading>
-                        <Paragraph className="FadeInNext" style={{ marginTop: 40, maxWidth: 350 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</Paragraph>
+                        <Heading level="2" className="FadeIn">Împrejurimi</Heading>
+                        <Paragraph className="FadeInNext" style={{ marginTop: 40, maxWidth: 350 }}>Un tărâm prea puțin vizitat pentru locurile minunate pe care le are de oferit!</Paragraph>
                         <ActivitiesSlider>
                             {
                                 Object.keys(activities).map(aId => {
                                     const a = activities[aId]
-                                    return <ActivityPrev>
-                                        <GatsbyImage fluid={a.image} style={{ height: '100%' }} />
+                                    if (a.handle)
+                                        a.handle(event)
+
+                                    return <PowerHolder><PowerCover className={a.class} style={{ width: '100%' }}> <ActivityPrev>
+                                        <GatsbyImage className="ContainedImage" fluid={a.image} style={{ height: '100%' }} />
                                         <ActivityDescription color={'light'} weight={'bold'}>{a.name}</ActivityDescription>
                                     </ActivityPrev>
+                                    </PowerCover></PowerHolder>
                                 })
                             }
                         </ActivitiesSlider>
@@ -122,27 +135,57 @@ const ActivityDescription = styled(Paragraph)`
             bottom: 0;
             left: 0;
             padding: 30px;
+            max-width:90%;
+            @media ${Device.tablet} {
+                max-width:230px;;
+
+        }
         `
+
+const PowerHolder = styled.div`
+    width:46%;
+
+    @media ${Device.tablet} {
+                width:100%;
+                margin-bottom:30px;
+
+        }
+`
 
 const ActivitiesSlider = styled.div`
             display:flex;
             flex-direction:row;
             margin-top:60px;
+            justify-content: space-between;
+
+            @media ${Device.tablet} {
+                flex-direction:column;
+
+        }
         `
 const ActivityPrev = styled.div`
-            min-width:450px;
             height:600px;
             margin-right:30px;
             position: relative;
+
+            @media ${Device.tablet} {
+                height:400px;
+                margin-right:0px;
+
+        }
 
             img{
                 transition:all 0.4s ease-initial;
             }
 
             &:hover{
-                img{
+                .ContainedImage{
                     transform:scale(1.2);
                 }
+            }
+            .ContainedImage{
+                transition:all 1s ease-in;
+                width: 100%;
             }
         `
 const BackPhoto = styled(Img)`

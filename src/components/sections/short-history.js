@@ -7,9 +7,11 @@ import Img from "gatsby-image"
 import GatsbyImage from 'gatsby-image'
 import { Sizes, useWindowSize, Device } from "../../global/sizes"
 import { Controller, Scene } from 'react-scrollmagic'
-import { TimelineMax, TweenMax } from 'gsap'
+import { TimelineMax, TweenMax, Linear, Sine, Cubic, Expo, Power2, Power3 } from 'gsap'
 import { useOnEnterLeaveTransition } from '../../../hooks/useOnEnterLeaveTransition'
 import { useBackgroundColorChange } from '../../../hooks/useBackgroundColorChange'
+import { usePowerCover } from '../../../hooks/usePowerCover'
+import { PowerCover } from '../power-cover'
 
 export const ShortHistory = () => {
     const handleAnimation = useOnEnterLeaveTransition(() => {
@@ -17,17 +19,11 @@ export const ShortHistory = () => {
         tl.add(TweenMax.to(".FadeIn", 0.3, { opacity: 1, y: 0 }), 0);
         tl.add(TweenMax.to(".FadeInNext", 0.3, { opacity: 1, y: 0, delay: 0.1 }), 0);
         tl.add(TweenMax.to(".FadeInNext2", 0.3, { opacity: 1, y: 0, delay: 0.1 }), 0);
-        tl.add(TweenMax.staggerTo(".FadeInImg", 0.4, { webkitClipPath: 'inset(0% 0% 0% 0% )' }, 0.4));
-        tl.add(TweenMax.staggerTo(".FadeInImg2", 0.4, { webkitClipPath: 'inset(0% 0% 0% 0% )' }, 0.4));
-        tl.add(TweenMax.staggerTo(".FadeInImg3", 0.4, { webkitClipPath: 'inset(0% 0% 0% 0% )' }, 0.4));
         tl.play()
     }, () => {
         TweenMax.to(".FadeIn", 0.3, { opacity: 0, y: 20 })
         TweenMax.to(".FadeInNext", 0.3, { opacity: 0, y: 20 })
         TweenMax.to(".FadeInNext2", 0.3, { opacity: 0, y: 20 })
-        TweenMax.staggerTo(".FadeInImg", 0.4, { webkitClipPath: 'inset(0% 100% 0% 0% )' }, 0.4)
-        TweenMax.staggerTo(".FadeInImg2", 0.4, { webkitClipPath: 'inset(0% 100% 0% 0% )' }, 0.4)
-        TweenMax.staggerTo(".FadeInImg3", 0.4, { webkitClipPath: 'inset(0% 100% 0% 0% )' }, 0.4)
     })
     const handleBackgroundChange = useBackgroundColorChange("#FFF", "#F1F0F0")
 
@@ -64,22 +60,34 @@ export const ShortHistory = () => {
 
     const photos = {
         'history1': {
-            name: "Parcul National Domogled - Valea Cernei"
+            class: "historyOne",
+            name: "Podul de piatră - 1864",
+            handle: usePowerCover("historyOne", "up")
         },
         'history2': {
-            name: "Cazanele Dunarii"
+            class: "historyTwo",
+            name: "Strada Cernei - 1900",
+            handle: usePowerCover("historyTwo", "up")
         },
         'history3': {
-            name: "Capul lui Decebal"
+            class: "historyThree",
+            name: "Parcul Central - 1913",
+            handle: usePowerCover("historyThree", "up")
         },
         'history4': {
-            name: "Parcul National Domogled - Valea Cernei"
+            class: "historyFour",
+            name: "Gara Herculane",
+            handle: usePowerCover("historyFour", "up")
         },
         'history5': {
-            name: "Cazanele Dunarii"
+            class: "historyFive",
+            name: "Piața Hercules",
+            handle: usePowerCover("historyFive", "up")
         },
         'history6': {
-            name: "Capul lui Decebal"
+            class: "historySix",
+            name: "Băile Neptun",
+            handle: usePowerCover("historySix", "up")
         }
     }
 
@@ -99,17 +107,22 @@ export const ShortHistory = () => {
                         <Heading level="2" className="FadeIn">Scurt istoric</Heading>
                         <div>
                             <Paragraph color="brown" decorated="yes" className="FadeInNext" offset={1200}>1867 ani de turism balnear</Paragraph>
-                            <Paragraph col="2" style={{ marginTop: 60 }} className="FadeInNext2">The spa town of Băile Herculane has a long history of human habitation. Numerous archaeological discoveries show that the area has been inhabited since the Paleolithic era. The Peștera Hoților (Cave of the Thieves), contains multiple levels, including one from the Mousterian period, one from the Mesolithic period (late Epigravettian) and several from the later Neolithic periods
-                            The spa town of Băile Herculane has a long history of human habitation. Numerous archaeological discoveries show that the area has been inhabited since the Paleolithic era. The Peștera Hoților (Cave of the Thieves), contains multiple levels, including one from the Mousterian period, one from the Mesolithic period (late Epigravettian) and several from the later Neolithic periods
+                            <Paragraph col="2" style={{ marginTop: 60 }} className="FadeInNext2">
+                                Un renume precum al Băilor Herculane nu se poate dobândi decât printr-o moștenire istorică, culturală și naturală incontestabilă. Astfel istoria bimilenară a stațiunii începe odată cu prima sa atestare documentară în anul 153 e.n., atestare consemnată pe o tabulă votivă descoperită în siturile arheologice deschise la mijlocul secolului XIX în zona localității.
+     Cunoscută la începuturi doar de legiunile romane stabilite în zona Severinului și de administrația romană a regiunii, stațiunea devine în scurtă vreme un important punct de atracție pentru aristocrația Romei antice. Descoperite și îngrijite de romanii de rând stabiliți in Dacia, miraculoasele izvoare termale ajung obiect de venerație în întreaga lume romană, protectorul cultului închinat lor fiind nimeni altul decât legendarul erou Hercules.
                                 </Paragraph></div>
                         <HistoryPhotos>
                             {
-                                Object.keys(photos).map(aId => {
+                                Object.keys(photos).map((aId, i) => {
                                     const a = photos[aId]
-                                    return <HistoryImageHolder>
+                                    if (a.handle)
+                                        a.handle(event)
+
+                                    return <PowerHolder style={{ marginTop: i == 1 || i == 4 ? 60 : 0 }}><PowerCover className={a.class} style={{ width: "100%" }}><HistoryImageHolder>
                                         <HistoryImage fluid={a.image} style={{ height: '200px' }} />
                                         <HistoryPhotoDescription weight={'bold'}>{a.name}</HistoryPhotoDescription>
                                     </HistoryImageHolder>
+                                    </PowerCover></PowerHolder>
                                 })
                             }
                         </HistoryPhotos>
@@ -176,15 +189,23 @@ const HistoryPhotos = styled.div`
     margin-top:120px;
 
     @media ${Device.tablet} {
-        flex-direction: column;
+        flex-direction: column !important;
         height:auto;
+    }
+`
+const PowerHolder = styled.div`
+    width:31%;
+
+    @media ${Device.tablet} {
+        width:100%;
+        margin-bottom:30px;
+
     }
 `
 const HistoryImageHolder = styled.div`
     z-index: 1;
-    width: 30%;
+    width: 100%;
     height:350px;
-    transition: all 0.4s ease-in;
     display: flex;
     flex-direction: column;
 
@@ -224,6 +245,9 @@ const HistoryBgImg = styled(Img)`
 
 `
 const HistoryPhotoDescription = styled(Heading)`
-    font-size:16px;
+    font-size:18px;
+    text-align:left;
+    margin-top:15px;
+    align-self: flex-start;
 
 `

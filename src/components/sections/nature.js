@@ -27,7 +27,8 @@ export const Nature = () => {
     })
     const handleBackgroundColorChange = useBackgroundColorChange('#7FB0B5', '#FFF')
     const ImgEnterLeave = usePowerCover("NatFadeInImg", "right")
-    const Img2EnterLeave = usePowerCover("NatFadeInImg2", "right")
+    const Img2EnterLeave = usePowerCover("NatFadeInImg2", "left")
+    const Img3EnterLeave = usePowerCover("NatFadeInImg3", "right")
 
     return <StaticQuery
         query={graphql`
@@ -68,11 +69,12 @@ export const Nature = () => {
                     handleAnimation(event)
                     ImgEnterLeave(event)
                     Img2EnterLeave(event)
+                    Img3EnterLeave(event)
                     handleBackgroundColorChange(event)
                     return <NatureHome>
                         <ContentHolder>
                             <ContentLeft>
-                                <Heading level="2" className="NatFadeIn">Păsește pe urmele Impărătesei Sissi și al Impăratului Franz Joseph</Heading>
+                                <Heading level="2" className="NatFadeIn">Pășește pe urmele Împărătesei Sissi și ale Împăratului Franz Joseph</Heading>
                                 <PowerCover className="NatFadeInImg">
                                     <NaturePhoto1
                                         fluid={data.first.childImageSharp.fluid}
@@ -82,15 +84,13 @@ export const Nature = () => {
                             </ContentLeft>
                             <ContentRight>
                                 <Paragraph style={{}} className="NatFadeInNext">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum est viverra urna nunc. Etiam eu, tristique enim quis egestas.
-                        <br /><br /><br />
                                     <b>Aer ionizat</b>
                                     <br /><br />
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum est viverra urna nunc. Etiam eu, tristique enim quis egestas.
+                                    Deşi se află la altitudinea de 168 m, în Băile Herculane se respiră aer ionizat  ca la 1500-2000 de metri, comparabil cu cel din Alpii elveţieni din staţiunea Davos sau cu aerul de la cascada Niagara. Acest aer ionizat negativ (între 2000 şi 6400 de ioni negativi pe cm2) este generat de cele 20 de izvoare termominerale, de cascadele Cernei, dar mai ales de pădurea de fag, de pin negru şi vegetaţia  de ferigă din zonă.
                         <br /><br /><br />
                                     <b>Pinul negru de banat</b>
                                     <br /><br />
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum est viverra urna nunc. Etiam eu, tristique enim quis egestas.
+                                    Parcul Naţional „Domogled – Valea Cernei” este o grădină botanică în natură. Muntele Domogled ce se ridică aproape vertical deasupra staţiunii oferă o imagine spectaculoasă pe care din loc în loc se văd insulele de Pin Negru de Banat.
                     </Paragraph>
                                 <PowerCover className="NatFadeInImg2">
                                     <NaturePhoto2
@@ -99,10 +99,12 @@ export const Nature = () => {
                                     />
                                 </PowerCover>
                             </ContentRight>
-                            <NaturePhoto3
-                                fluid={data.forth.childImageSharp.fluid}
-                                alt="Muntii Domogled"
-                            />
+                            <PowerCover className="NatFadeInImg3" style={{ width: "100%" }}>
+                                <NaturePhoto3
+                                    fluid={data.forth.childImageSharp.fluid}
+                                    alt="Muntii Domogled"
+                                />
+                            </PowerCover>
                             <BackPhoto
                                 fluid={data.third.childImageSharp.fluid}
                                 alt="Mountains"
