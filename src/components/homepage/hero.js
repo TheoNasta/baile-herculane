@@ -19,7 +19,7 @@ export const Hero = container => {
         <StaticQuery
             query={graphql`
                 query {
-                    file(relativePath: { eq: "hero.jpg" }) {
+                    file(relativePath: { eq: "homepage/hero.jpg" }) {
                         childImageSharp {
                             fixed(width: 1600) {
                                 ...GatsbyImageSharpFixed

@@ -1,14 +1,14 @@
 import React, { useRef, useEffect } from "react"
 
 import { Page } from "../components/page"
-import { Logo } from '../components/logo'
-import { Hero } from "../components/sections/hero"
-import { ShortHistory } from "../components/sections/short-history"
-import { Spa } from "../components/sections/spa"
-import { Nature } from "../components/sections/nature"
-import { Activities } from "../components/sections/activities"
-import { Around } from "../components/sections/around"
-import { Footer } from "../components/sections/footer"
+import { Logo } from "../components/logo"
+import { Hero } from "../components/homepage/hero"
+import { ShortHistory } from "../components/homepage/short-history"
+import { Spa } from "../components/homepage/spa"
+import { Nature } from "../components/homepage/nature"
+import { Activities } from "../components/homepage/activities"
+import { Around } from "../components/homepage/around"
+import { Footer } from "../components/homepage/footer"
 import ReactGA from "react-ga"
 
 const IndexPage = () => {
